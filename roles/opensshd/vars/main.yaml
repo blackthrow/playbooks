@@ -1,0 +1,11 @@
+---
+opensshd:
+  port: 22
+  allowTcpForwarding: no
+  x11Forwarding: no
+  permitTTY: yes
+  printMotd: yes
+  printLastLog: no
+  tcpKeepAlive: yes
+  useDNS: no
+  permitTunnel: yes

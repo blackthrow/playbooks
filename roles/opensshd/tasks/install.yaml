@@ -1,0 +1,7 @@
+---
+- name: Install
+  apk:
+    name: openssh-server
+    state: present
+    update_cache: yes
+  become: true

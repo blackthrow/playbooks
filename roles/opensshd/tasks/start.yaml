@@ -1,0 +1,8 @@
+---
+- name: Start the service
+  service:
+    name: sshd
+    state: started
+    enabled: yes
+  become: true
+  when: ansible_virtualization_type != "docker"
