@@ -16,21 +16,8 @@
         update_cache: yes
 
     - name: Resize root partition {{ rootfs_dev }}
-      # TODO: determine correct device - either /dev/sda | /dev/mmcblkp1
-      # TODO: determine correct partition number!
       shell: parted ---pretend-input-tty {{ storage_dev }} resizepart 2 Yes 100% && resize2fs {{ rootfs_dev }}
       become: true
-
-    - name: Create user "{{ user }}"
-      user:
-        name: "{{ user }}"
-        generate_ssh_key: yes
-        password: "{{ user_password | password_hash('sha512', password_salt) }}"
-        update_password: always
-        shell: /bin/false
-        state: present
-      become: true
-      #register: user_data
 
     - name: Change hostname
       hostname:
@@ -38,4 +25,15 @@
 
     - import_role:
         name: docker
+
+    - name: Create user "{{ user }}"
+      user:
+        name: "{{ user }}"
+        generate_ssh_key: yes
+        password: "{{ user_password | password_hash('sha512', password_salt) }}"
+        update_password: always
+        groups: [ docker ]
+        shell: /bin/bash
+        state: present
+      become: true
 
