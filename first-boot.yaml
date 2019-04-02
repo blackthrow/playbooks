@@ -2,8 +2,8 @@
 - hosts: all
   gather_facts: no
   tasks:
-    - name: Bootstrap node
-      raw: su -l root -c "pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy && pacman -S python"
+    - name: Bootstrap the system
+      raw: su -l root -c "pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy && pacman --noconfirm --needed -S python"
 
 - hosts: all
   vars_files:
@@ -15,10 +15,10 @@
         state: present
         update_cache: yes
 
-    - name: Resize root partition
+    - name: Resize root partition {{ rootfs_dev }}
       # TODO: determine correct device - either /dev/sda | /dev/mmcblkp1
       # TODO: determine correct partition number!
-      shell: parted /dev/sda resizepart 2 Yes 100% print && resize2fs /dev/sda2
+      shell: parted ---pretend-input-tty {{ storage_dev }} resizepart 2 Yes 100% && resize2fs {{ rootfs_dev }}
       become: true
 
     - name: Create user "{{ user }}"
