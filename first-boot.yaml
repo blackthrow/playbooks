@@ -1,14 +1,24 @@
 ---
 - hosts: all
+  gather_facts: no
+  tasks:
+    - name: Bootstrap node
+      raw: su -l root -c "pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy && pacman -S python"
+
+- hosts: all
   vars_files:
     - vars/main.yaml
   tasks:
-    - name: Initialize pacman keyring
-      shell: pacman-key --init
-      become: true
+    - name: Install dependencies
+      pacman:
+        name: [ inetutils, parted ]
+        state: present
+        update_cache: yes
 
-    - name: Import package signing keys
-      shell: pacman-key --populate archlinuxarm
+    - name: Resize root partition
+      # TODO: determine correct device - either /dev/sda | /dev/mmcblkp1
+      # TODO: determine correct partition number!
+      shell: parted /dev/sda resizepart 2 Yes 100% print && resize2fs /dev/sda2
       become: true
 
     - name: Create user "{{ user }}"
