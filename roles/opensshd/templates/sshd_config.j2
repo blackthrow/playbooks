@@ -1,10 +1,9 @@
-#jinja2: trim_blocks:False
 #	$OpenBSD: sshd_config,v 1.103 2018/04/09 20:41:22 tj Exp $
 
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
 
-# This sshd was compiled with PATH=/bin:/usr/bin:/sbin:/usr/sbin
+# This sshd was compiled with PATH=/usr/local/sbin:/usr/local/bin:/usr/bin
 
 # The strategy used for options in the default sshd_config shipped with
 # OpenSSH is to specify options with their default value where
@@ -12,9 +11,8 @@
 # default value.
 
 ListenAddress 0.0.0.0
+ListenAddress ::
 Port {{ opensshd.port }}
-#AddressFamily any
-#ListenAddress ::
 
 #HostKey /etc/ssh/ssh_host_rsa_key
 #HostKey /etc/ssh/ssh_host_ecdsa_key
@@ -59,7 +57,7 @@ PasswordAuthentication no
 PermitEmptyPasswords no
 
 # Change to no to disable s/key passwords
-#ChallengeResponseAuthentication yes
+ChallengeResponseAuthentication no
 
 # Kerberos options
 #KerberosAuthentication no
@@ -80,27 +78,26 @@ PermitEmptyPasswords no
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-#UsePAM no
+UsePAM yes
 
 #AllowAgentForwarding yes
-# Feel free to re-enable these if your use case requires them.
-AllowTcpForwarding {% if opensshd.allowTcpForwarding %}yes{% else %}no{% endif %}
-GatewayPorts no
-X11Forwarding {% if opensshd.x11Forwarding %}yes{% else %}no{% endif %}
+#AllowTcpForwarding yes
+#GatewayPorts no
+#X11Forwarding no
 #X11DisplayOffset 10
 #X11UseLocalhost yes
-PermitTTY {% if opensshd.permitTTY %}yes{% else %}no{% endif %}
-PrintMotd {% if opensshd.printMotd %}yes{% else %}no{% endif %}
-#PrintLastLog {% if opensshd.printLastLog %}yes{% else %}no{% endif %}
-TCPKeepAlive {% if opensshd.tcpKeepAlive %}yes{% else %}no{% endif %}
+#PermitTTY yes
+PrintMotd no # pam does that
+#PrintLastLog yes
+#TCPKeepAlive yes
 #PermitUserEnvironment no
 #Compression delayed
 #ClientAliveInterval 0
 #ClientAliveCountMax 3
-UseDNS {% if opensshd.useDNS %}yes{% else %}no{% endif %}
+#UseDNS no
 #PidFile /run/sshd.pid
 #MaxStartups 10:30:100
-PermitTunnel {% if opensshd.permitTunnel %}yes{% else %}no{% endif %}
+#PermitTunnel no
 #ChrootDirectory none
 #VersionAddendum none
 
@@ -116,3 +113,4 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 #	AllowTcpForwarding no
 #	PermitTTY no
 #	ForceCommand cvs server
+
