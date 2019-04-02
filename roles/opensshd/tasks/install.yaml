@@ -1,7 +1,7 @@
 ---
 - name: Install
-  apk:
-    name: openssh-server
+  pacman:
+    name: openssh
     state: present
     update_cache: yes
   become: true

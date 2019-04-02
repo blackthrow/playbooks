@@ -24,6 +24,9 @@
         name: "{{ hostname }}"
 
     - import_role:
+        name: opensshd
+
+    - import_role:
         name: docker
 
     - name: Create user "{{ user }}"
