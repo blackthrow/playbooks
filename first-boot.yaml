@@ -3,7 +3,8 @@
   gather_facts: no
   tasks:
     - name: Bootstrap the system
-      raw: su -l root -c "pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy && pacman --noconfirm --needed -S python"
+      raw: pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy && pacman --noconfirm --needed -S python
+      become: true
 
 - hosts: all
   vars_files:
