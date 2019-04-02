@@ -39,6 +39,13 @@
         groups: [ docker ]
         shell: /bin/bash
         state: present
+      register: user_data
+
+    - name: Authorize {{ user }}\'s SSH key
+      authorized_key:
+        user: "{{ user }}"
+        key: "{{ user_data.ssh_public_key }}"
+        state: present
 
     #- name: Disable default user account {{ default_user }}
     #  user:
