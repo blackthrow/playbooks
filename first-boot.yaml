@@ -33,6 +33,18 @@
     - import_role:
         name: tor
 
+    - name: Generate root's SSH key
+      user:
+        name: root
+        generate_ssh_key: yes
+      register: user_data
+
+    - name: Authorize root SSH key
+      authorized_key:
+        user: root
+        key: "{{ user_data.ssh_public_key }}"
+        state: present
+
     - name: Create user "{{ user }}"
       user:
         name: "{{ user }}"
@@ -44,7 +56,7 @@
         state: present
       register: user_data
 
-    - name: Authorize {{ user }}\'s SSH key
+    - name: Authorize {{ user }} SSH key
       authorized_key:
         user: "{{ user }}"
         key: "{{ user_data.ssh_public_key }}"
