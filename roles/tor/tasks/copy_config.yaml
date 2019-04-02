@@ -1,0 +1,9 @@
+---
+- name: Copy configuration file
+  template:
+    src: torrc.j2
+    dest: /etc/tor/torrc
+    owner: root
+    group: root
+    mode: 0644
+  become: true
