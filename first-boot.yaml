@@ -9,6 +9,7 @@
 - hosts: all
   vars_files:
     - vars/main.yaml
+  become: true
   tasks:
     - name: Install dependencies
       pacman:
@@ -18,7 +19,6 @@
 
     - name: Resize root partition {{ rootfs_dev }}
       shell: parted ---pretend-input-tty {{ storage_dev }} resizepart 2 Yes 100% && resize2fs {{ rootfs_dev }}
-      become: true
 
     - name: Change hostname
       hostname:
@@ -39,7 +39,6 @@
         groups: [ docker ]
         shell: /bin/bash
         state: present
-      become: true
 
     #- name: Disable default user account {{ default_user }}
     #  user:
