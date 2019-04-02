@@ -37,3 +37,9 @@
         state: present
       become: true
 
+    #- name: Disable default user account {{ default_user }}
+    #  user:
+    #    name: "{{ default_user }}"
+    #    password_lock: yes
+    #    shell: /bin/nologin
+

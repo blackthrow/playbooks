@@ -4,3 +4,5 @@ password_salt: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 hostname: blackthrow
 storage_dev: /dev/sda
 rootfs_dev: "{{ storage_dev }}2"
+# Default non-root user in Arch Linux
+default_user: alarm
