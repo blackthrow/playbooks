@@ -9,6 +9,7 @@
 - hosts: all
   vars_files:
     - vars/main.yaml
+    - vars/users.yaml
   become: true
   tasks:
     - name: Install dependencies
@@ -33,34 +34,41 @@
     - import_role:
         name: tor
 
-    - name: Generate root's SSH key
+    - name: Create system users
       user:
-        name: root
+        name: "{{ item.key }}"
         generate_ssh_key: yes
-      register: user_data
-
-    - name: Authorize root SSH key
-      authorized_key:
-        user: root
-        key: "{{ user_data.ssh_public_key }}"
-        state: present
-
-    - name: Create user "{{ user }}"
-      user:
-        name: "{{ user }}"
-        generate_ssh_key: yes
-        password: "{{ user_password | password_hash('sha512', password_salt) }}"
+        password: "{{ item.value.password | password_hash('sha512', password_salt) }}"
         update_password: always
         groups: [ docker ]
         shell: /bin/bash
         state: present
-      register: user_data
+      with_dict: "{{ users }}"
+      when: item.value.system_user | default(true)
 
-    - name: Authorize {{ user }} SSH key
+    - name: Authorize SSH keys
       authorized_key:
-        user: "{{ user }}"
-        key: "{{ user_data.ssh_public_key }}"
+        user: "{{ item.key }}"
+        key: "{{ lookup('file', '/home/' + item.key + '/.ssh/id_rsa.pub') }}"
         state: present
+      with_dict: "{{ users }}"
+      when: item.value.system_user | default(true)
+
+    - name: Generate root's SSH key
+      user:
+        name: root
+        generate_ssh_key: yes
+
+    - name: Authorize root SSH key
+      authorized_key:
+        user: root
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+        state: present
+
+    #- name: Change root's password
+    #  user:
+    #    name: root
+    #    password: "{{ root_password | password_hash('sha512', password_salt) }}"
 
     #- name: Disable default user account {{ default_user }}
     #  user:

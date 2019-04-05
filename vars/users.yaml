@@ -1,0 +1,11 @@
+---
+users:
+  default:
+    system_user: false
+  user:
+    password: blackthrow1
+    image: alpine:latest
+    container:
+      user: root
+      workdir: "/root"
+      command: "/bin/sh"
