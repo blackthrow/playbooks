@@ -1,0 +1,9 @@
+---
+- name: Copy configuration file
+  template:
+    src: dosh.json.j2
+    dest: /etc/dosh.json
+    owner: root
+    group: root
+    mode: 0644
+  become: true
