@@ -1,1 +1,5 @@
-{{ users | to_json(indent=4) }}
+{% set content = {} %}
+{% for username, user in users.items() -%}
+	{% set _ = content.__setitem__(username, { "image": (user["image"] | default("")), "container": (user["container"] | default({})) }) %}
+{%- endfor %}
+{{ content | to_json(indent=4) }}
