@@ -34,6 +34,9 @@
     - import_role:
         name: tor
 
+    - import_role:
+        name: dosh
+
     - name: Create system users
       user:
         name: "{{ item.key }}"
@@ -41,7 +44,7 @@
         password: "{{ item.value.password | password_hash('sha512', password_salt) }}"
         update_password: always
         groups: [ docker ]
-        shell: /bin/bash
+        shell: "{{ item.value.shell | default('/bin/bash') }}"
         state: present
       with_dict: "{{ users }}"
       when: item.value.system_user | default(true)
@@ -64,6 +67,12 @@
         user: root
         key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
         state: present
+
+    - name: Pull Docker images
+      docker_image:
+        name: "{{ item.value.image }}"
+      with_dict: "{{ users }}"
+      when: item.value.image is defined and item.value.image != ""
 
     #- name: Change root's password
     #  user:
