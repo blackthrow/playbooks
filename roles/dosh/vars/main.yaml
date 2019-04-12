@@ -1,5 +1,5 @@
 ---
-dosh_github_user=blackthrow
-dosh_github_repo=dosh
-dosh_github_asset=dosh
-dosh_install_path=/usr/local/bin/dosh
+dosh_github_user: blackthrow
+dosh_github_repo: dosh
+dosh_github_asset: dosh
+dosh_install_path: /usr/local/bin/dosh
