@@ -1,0 +1,20 @@
+---
+- name: Download latest release
+  block:
+    - uri:
+        url: https://api.github.com/repos/{{ dosh_github_user }}/{{ dosh_github_repo }}/releases/latest
+        return_content: yes
+        status_code: 200
+      register: api_response
+
+    - set_fact:
+        assets_url: "{{ api_response.json.assets | selectattr('name', 'equalto', dosh_github_asset + '_' + 'linux' + '-' + ansible_architecture) | map(attribute='browser_download_url') | list }}"
+
+    - fail:
+        msg: Asset {{ dosh_github_asset + '_' + (ansible_system | lower) + '-' + ansible_architecture }} not found.
+      when: assets_url | length == 0
+
+    - get_url:
+        url: "{{ assets_url[0] }}"
+        dest: "{{ dosh_install_path }}
+
