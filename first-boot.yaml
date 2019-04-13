@@ -42,6 +42,8 @@
         generate_ssh_key: yes
         password: "{{ item.value.password | password_hash('sha512', password_salt) }}"
         update_password: always
+        create_home: yes
+        home: "{{ item.value.home | default('/home/' + item.key) }}"
         groups: "{{ item.value.groups | default([]) }}"
         shell: "{{ item.value.shell | default('/bin/bash') }}"
         state: present
@@ -51,7 +53,7 @@
     - name: Authorize SSH keys
       authorized_key:
         user: "{{ item.key }}"
-        key: "{{ lookup('file', '/home/' + item.key + '/.ssh/id_rsa.pub') }}"
+        key: "{{ lookup('file', (item.value.home | default('/home/' + item.key)) + '/.ssh/id_rsa.pub') }}"
         state: present
       with_dict: "{{ users }}"
       when: item.value.system_user | default(true)

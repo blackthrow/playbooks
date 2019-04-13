@@ -8,6 +8,7 @@ users:
       workdir: /root
       command: /bin/sh
   root:
+    home: /root # DO NOT DELETE root's directory name!
     password: panopticon
   user:
     groups: [ docker ]
