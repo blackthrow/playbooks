@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - name: Bootstrap the system
       raw: pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy && pacman --noconfirm --needed -S python
@@ -18,8 +18,10 @@
         state: present
         update_cache: yes
 
-    - name: Resize root partition {{ rootfs_dev }}
-      shell: parted ---pretend-input-tty {{ storage_dev }} resizepart 2 Yes 100% && resize2fs {{ rootfs_dev }}
+    - name: Resize root partition
+      shell: parted ---pretend-input-tty {{ item.device | regex_replace("\d$", "") }} resizepart 2 Yes 100% && resize2fs {{ item.device }}
+      with_items: "{{ ansible_mounts }}"
+      when: item.mount == "/"
 
     - name: Change hostname
       hostname:
