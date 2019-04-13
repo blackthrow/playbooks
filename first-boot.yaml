@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  gather_facts: yes
+  gather_facts: no
   tasks:
     - name: Bootstrap the system
       raw: pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy && pacman --noconfirm --needed -S python
