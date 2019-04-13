@@ -5,7 +5,8 @@ users:
     image: alpine:latest
     container:
       user: root
-      workdir: "/root"
-      command: "/bin/sh"
+      workdir: /root
+      command: /bin/sh
   user:
+    shell: /usr/local/bin/dosh
     password: blackthrow1
