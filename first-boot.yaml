@@ -28,9 +28,6 @@
         name: "{{ hostname }}"
 
     - import_role:
-        name: opensshd
-
-    - import_role:
         name: docker
 
     - import_role:
@@ -58,6 +55,11 @@
         state: present
       with_dict: "{{ users }}"
       when: item.value.system_user | default(true)
+
+    # Reconfigure OpenSSH server only after keys have been generated for system
+    # users. Otherwise we might lock ourselves out.
+    - import_role:
+        name: opensshd
 
     #- name: Generate root's SSH key
     #  user:
