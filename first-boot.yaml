@@ -59,16 +59,16 @@
       with_dict: "{{ users }}"
       when: item.value.system_user | default(true)
 
-    - name: Generate root's SSH key
-      user:
-        name: root
-        generate_ssh_key: yes
+    #- name: Generate root's SSH key
+    #  user:
+    #    name: root
+    #    generate_ssh_key: yes
 
-    - name: Authorize root SSH key
-      authorized_key:
-        user: root
-        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
-        state: present
+    #- name: Authorize root SSH key
+    #  authorized_key:
+    #    user: root
+    #    key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+    #    state: present
 
     - name: Pull Docker images
       docker_image:
