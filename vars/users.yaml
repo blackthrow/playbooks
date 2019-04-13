@@ -8,5 +8,6 @@ users:
       workdir: /root
       command: /bin/sh
   user:
+    groups: [ docker ]
     shell: /usr/local/bin/dosh
     password: blackthrow1

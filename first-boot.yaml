@@ -45,7 +45,7 @@
         generate_ssh_key: yes
         password: "{{ item.value.password | password_hash('sha512', password_salt) }}"
         update_password: always
-        groups: [ docker ]
+        groups: "{{ item.value.groups | default([]) }}"
         shell: "{{ item.value.shell | default('/bin/bash') }}"
         state: present
       with_dict: "{{ users }}"
