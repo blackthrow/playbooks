@@ -23,6 +23,13 @@
       with_items: "{{ ansible_mounts }}"
       when: item.mount == "/"
 
+    - import_role:
+        name: pip
+
+    - name: Install Python dependencies
+      pip:
+        name: [ docker ]
+
     - name: Change hostname
       hostname:
         name: "{{ hostname }}"
