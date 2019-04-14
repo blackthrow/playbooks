@@ -76,9 +76,9 @@
       with_dict: "{{ users }}"
       when: item.value.image is defined and item.value.image != ""
 
-    #- name: Disable default user account {{ default_user }}
-    #  user:
-    #    name: "{{ default_user }}"
-    #    password_lock: yes
-    #    shell: /bin/nologin
+    - name: Disable default user account {{ default_user }}
+      user:
+        name: "{{ default_user }}"
+        password_lock: yes
+        shell: /bin/nologin
 
