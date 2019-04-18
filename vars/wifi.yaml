@@ -1,0 +1,5 @@
+---
+wifi:
+  wlan0:
+    essid: HoloNet
+    passphrase: shallowwater5
