@@ -1,0 +1,11 @@
+---
+- name: Slurp SSH key
+  slurp:
+    src: "{{ (user.home | default('/home/' + username)) + '/.ssh/id_rsa.pub') }}"
+  register: result
+
+- name: Authorize SSH keys
+  authorized_key:
+    user: "{{ username }}"
+    key: "{{ result['content'] | b64decode }}"
+    state: present
