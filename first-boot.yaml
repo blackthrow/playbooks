@@ -30,10 +30,6 @@
       pip:
         name: [ docker ]
 
-    - name: Change hostname
-      hostname:
-        name: "{{ hostname }}"
-
     - import_role:
         name: docker
 
@@ -81,4 +77,8 @@
         name: "{{ default_user }}"
         password_lock: yes
         shell: /bin/nologin
+
+    - name: Change hostname
+      hostname:
+        name: "{{ hostname }}"
 
