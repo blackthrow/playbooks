@@ -1,0 +1,12 @@
+---
+- name: Create system users
+  user:
+    name: "{{ username }}"
+    generate_ssh_key: yes
+    password: "{{ user.password | password_hash('sha512', password_salt) }}"
+    update_password: always
+    create_home: yes
+    home: "{{ user.home | default('/home/' + username) }}"
+    groups: "{{ user.groups | default([]) }}"
+    shell: "{{ user.shell | default('/bin/bash') }}"
+    state: present
