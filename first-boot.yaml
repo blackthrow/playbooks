@@ -1,4 +1,7 @@
 ---
+#
+# Play: Bootstrap pacman and python so we can run Ansible.
+#
 - hosts: all
   gather_facts: no
   tasks:
@@ -6,6 +9,26 @@
       raw: pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy && pacman --noconfirm --needed -S python
       become: true
 
+#
+# Play: Create system users and generate SSH keys.
+#
+- hosts: all
+  vars_files:
+    - vars/main.yaml
+    - vars/users.yaml
+  become: true
+  tasks:
+    - include_role:
+        name: user
+      vars:
+        username: "{{ item.key }}"
+        user: "{{ item.value }}"
+      with_dict: "{{ users }}"
+      when: item.key != root and item.value.system_user | default(true)
+
+#
+# Play: Configure other parts of the system, install software.
+#
 - hosts: all
   vars_files:
     - vars/main.yaml
@@ -31,40 +54,16 @@
         name: [ docker ]
 
     - import_role:
-        name: docker
-
-    - import_role:
         name: tor
 
     - import_role:
         name: dosh
 
-    - name: Create system users
-      user:
-        name: "{{ item.key }}"
-        generate_ssh_key: yes
-        password: "{{ item.value.password | password_hash('sha512', password_salt) }}"
-        update_password: always
-        create_home: yes
-        home: "{{ item.value.home | default('/home/' + item.key) }}"
-        groups: "{{ item.value.groups | default([]) }}"
-        shell: "{{ item.value.shell | default('/bin/bash') }}"
-        state: present
-      with_dict: "{{ users }}"
-      when: item.value.system_user | default(true)
-
-    - name: Authorize SSH keys
-      authorized_key:
-        user: "{{ item.key }}"
-        key: "{{ lookup('file', (item.value.home | default('/home/' + item.key)) + '/.ssh/id_rsa.pub') }}"
-        state: present
-      with_dict: "{{ users }}"
-      when: item.value.system_user | default(true)
-
-    # Reconfigure OpenSSH server only after keys have been generated for system
-    # users. Otherwise we might lock ourselves out.
     - import_role:
         name: opensshd
+
+    - import_role:
+        name: docker
 
     - name: Pull Docker images
       docker_image:
