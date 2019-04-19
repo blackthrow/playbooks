@@ -13,6 +13,7 @@
 # Play: Create system users and generate SSH keys.
 #
 - hosts: all
+  gather_facts: no
   vars_files:
     - vars/main.yaml
     - vars/users.yaml
@@ -24,7 +25,7 @@
         username: "{{ item.key }}"
         user: "{{ item.value }}"
       with_dict: "{{ users }}"
-      when: item.key != root and item.value.system_user | default(true)
+      when: item.key != "root" and item.value.system_user | default(true)
 
 #
 # Play: Configure other parts of the system, install software.
