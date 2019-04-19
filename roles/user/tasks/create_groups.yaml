@@ -3,5 +3,6 @@
   group:
     name: "{{ group }}"
     state: present
-  loop_var: group
+  loop_control:
+    loop_var: group
   with_items: "{{ user.groups }}"
