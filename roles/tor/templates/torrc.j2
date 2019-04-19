@@ -75,7 +75,7 @@ DataDirectory /var/lib/tor
 #HiddenServicePort 80 127.0.0.1:80
 #HiddenServicePort 22 127.0.0.1:22
 
-{% for onion_name, onion in onions %}
+{% for onion_name, onion in onions.items() %}
 HiddenServiceDir /var/lib/tor/{{ onion_name }}
 HiddenServicePort {{ onion.port }} {{ onion.service.address }}:{{ onion.service.port }}
 {% endfor %}
