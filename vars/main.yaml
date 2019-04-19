@@ -1,3 +1,4 @@
 hostname: blackthrow
 # Default non-root user in Arch Linux
 default_user: alarm
+resource_store: "{{ playbook_dir }}/resources"
