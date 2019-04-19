@@ -1,3 +1,4 @@
 ---
+- include: create_groups.yaml
 - include: create.yaml
 - include: authorize_ssh_key.yaml
