@@ -1,0 +1,7 @@
+---
+- name: Reload the service
+  systemd:
+    name: sshd
+    state: reloaded
+    enabled: yes
+  become: true
