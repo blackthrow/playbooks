@@ -28,6 +28,36 @@
       when: item.key != "root" and item.value.system_user | default(true)
 
 #
+# Play: Change root's password and generate SSH key.
+#
+- hosts: all
+  gather_facts: no
+  vars_files:
+    - vars/main.yaml
+    - vars/users.yaml
+  become: true
+  tasks:
+    - meta: end_play
+      when: users["root"] is undefined or (users["root"].system_user | default(true)) == false
+
+    - include_role:
+        name: user
+        tasks_from: create
+      vars:
+        username: root
+        user: "{{ users['root'] }}"
+
+    - set_fact:
+        ansible_become_pass: "{{ users['root'].password }}"
+
+    - include_role:
+        name: user
+        tasks_from: authorize_ssh_key
+      vars:
+        username: root
+        user: "{{ users['root'] }}"
+
+#
 # Play: Configure other parts of the system, install software.
 #
 - hosts: all
