@@ -1,0 +1,7 @@
+---
+onions:
+  blackthrow_sshd:
+    port: 22
+    service:
+      address: 127.0.0.1
+      port: 22
