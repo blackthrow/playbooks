@@ -77,7 +77,9 @@ DataDirectory /var/lib/tor
 
 {% for onion_name, onion in onions.items() %}
 HiddenServiceDir /var/lib/tor/{{ onion_name }}
-HiddenServicePort {{ onion.port }} {{ onion.service.address }}:{{ onion.service.port }}
+	{% for service in onion %}
+HiddenServicePort {{ service.port }} {{ service.service.address }}:{{ service.service.port }}
+	{% endfor %}
 {% endfor %}
 ################ This section is just for relays #####################
 #
