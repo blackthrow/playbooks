@@ -75,9 +75,10 @@ DataDirectory /var/lib/tor
 #HiddenServicePort 80 127.0.0.1:80
 #HiddenServicePort 22 127.0.0.1:22
 
-HiddenServiceDir /var/lib/tor/blackthrow_sshd
-HiddenServicePort 22 127.0.0.1:22
-
+{% for onion_name, onion in onions %}
+HiddenServiceDir /var/lib/tor/{{ onion_name }}
+HiddenServicePort {{ onion.port }} {{ onion.service.address }}:{{ onion.service.port }}
+{% endfor %}
 ################ This section is just for relays #####################
 #
 ## See https://www.torproject.org/docs/tor-doc-relay for details.
