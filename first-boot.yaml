@@ -67,7 +67,7 @@
         update_cache: yes
 
     - name: Resize root partition
-      shell: parted ---pretend-input-tty {{ item.device | regex_replace("\d$", "") }} resizepart 2 Yes 100% && resize2fs {{ item.device }}
+      shell: parted ---pretend-input-tty {{ item.device | regex_replace("p?\d$", "") }} resizepart 2 Yes 100% && resize2fs {{ item.device }}
       with_items: "{{ ansible_mounts }}"
       when: item.mount == "/"
 
