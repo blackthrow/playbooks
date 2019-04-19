@@ -123,7 +123,7 @@
   tasks:
     - name: Fetch SSH private keys
       fetch:
-        src: "{{ (user.home | default('/home/' + username)) + '/.ssh/id_rsa' }}"
+        src: "{{ (item.value.home | default('/home/' + item.key)) + '/.ssh/id_rsa' }}"
         dest: "{{ resource_store }}"
         fail_on_missing: no
       with_dict: "{{ users }}"
