@@ -1,5 +1,5 @@
 ---
-- name: Create system user "{{ username }}"
+- name: Create user "{{ username }}"
   user:
     name: "{{ username }}"
     generate_ssh_key: yes
