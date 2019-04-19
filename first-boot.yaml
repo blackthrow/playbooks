@@ -91,10 +91,11 @@
     - vars/users.yaml
   become: true
   tasks:
-    - name: Fetch SSH keys
+    - name: Fetch SSH private keys
       fetch:
-        src: "{{ (user.home | default('/home/' + username)) + '/.ssh/id_rsa.pub' }}"
+        src: "{{ (user.home | default('/home/' + username)) + '/.ssh/id_rsa' }}"
         dest: "{{ resource_store }}"
+        fail_on_missing: no
       with_dict: "{{ users }}"
       when: item.value.system_user | default(true)
 
