@@ -1,0 +1,7 @@
+---
+- name: Install
+  pacman:
+    name: wpa_supplicant
+    state: present
+    update_cache: yes
+  become: true

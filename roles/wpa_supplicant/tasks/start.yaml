@@ -1,0 +1,7 @@
+---
+- name: Start the service
+  systemd:
+    name: wpa_supplicant@{{ wifiname }}
+    state: started
+    enabled: yes
+  become: true
