@@ -59,6 +59,7 @@
     - vars/main.yaml
     - vars/users.yaml
     - vars/onions.yaml
+    - vars/wifi.yaml
   become: true
   tasks:
     - name: Install dependencies
@@ -78,6 +79,17 @@
     - name: Install Python dependencies
       pip:
         name: [ docker ]
+
+    - import_role:
+        name: wpa_supplicant
+        tasks_from: install
+
+    - import_role:
+        name: wpa_supplicant
+      vars:
+        iface_name: "{{ item.key }}"
+        iface: "{{ item.value }}"
+      with_dict: "{{ wifi }}"
 
     - import_role:
         name: tor
