@@ -8,7 +8,7 @@
 
 - name: Start systemd-networkd service
   systemd:
-    name: systemd-networkd@{{ iface_name }}
-    state: started
+    name: systemd-networkd
+    state: restarted
     enabled: yes
   become: true
