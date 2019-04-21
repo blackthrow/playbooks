@@ -1,5 +1,8 @@
 ---
 wifi:
   wlan0:
-    - ssid: HoloNet
-      psk: 6beb82a31d6ce0484b07da04008f9d125f6787282f43b09d1410d9ee90067ef4
+    # NOTICE: The double quotes around ssid and psk are mandatory. All the
+    # values are passed into wpa_supplicant.conf and certain params require to
+    # be enclosed in double quotes.
+    - ssid: "\"HoloNet\""
+      psk: "\"thepassphrase\""
