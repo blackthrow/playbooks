@@ -1,4 +1,3 @@
 ---
-- import_tasks: install.yaml
 - import_tasks: copy_config.yaml
 - import_tasks: start.yaml

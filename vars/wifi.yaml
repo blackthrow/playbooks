@@ -2,4 +2,4 @@
 wifi:
   wlan0:
     - ssid: HoloNet
-      passphrase: shallowwater5
+      psk: shallowwater5

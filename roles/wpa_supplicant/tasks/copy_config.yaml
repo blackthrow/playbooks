@@ -2,7 +2,7 @@
 - name: Copy configuration file
   template:
     src: wpa_supplicant-interface.conf
-    dest: /etc/wpa_supplicant/wpa_supplicant-{{ wifiname }}
+    dest: /etc/wpa_supplicant/wpa_supplicant-{{ iface_name }}.conf
     owner: root
     group: root
     mode: 0644
