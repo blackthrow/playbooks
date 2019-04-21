@@ -84,7 +84,7 @@
         name: wpa_supplicant
         tasks_from: install
 
-    - import_role:
+    - include_role:
         name: wpa_supplicant
       vars:
         iface_name: "{{ item.key }}"
