@@ -5,3 +5,10 @@
     state: started
     enabled: yes
   become: true
+
+- name: Start systemd-networkd service
+  systemd:
+    name: systemd-networkd@{{ iface_name }}
+    state: started
+    enabled: yes
+  become: true
