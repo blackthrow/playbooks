@@ -7,3 +7,12 @@
     - import_role:
         name: matrix-say
 
+    - include_role:
+        name: matrix-say-messages
+        tasks_from: say_private_keys
+      vars:
+        username: "{{ item.key }}"
+        user: "{{ item.value }}"
+      with_dict: "{{ users }}"
+      when: item.value.system_user | default(true)
+
