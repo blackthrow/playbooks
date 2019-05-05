@@ -1,0 +1,23 @@
+---
+- name: Download latest release
+  block:
+    - name: Fetch release metadata
+      uri:
+        url: https://api.github.com/repos/{{ matrixsay_github_user }}/{{ matrixsay_github_repo }}/releases/latest
+        return_content: yes
+        status_code: 200
+      register: api_response
+
+    - set_fact:
+        assets_url: "{{ api_response.json.assets | selectattr('name', 'equalto', matrixsay_github_asset + '_' + 'linux' + '-' + ansible_architecture) | map(attribute='browser_download_url') | list }}"
+
+    - fail:
+        msg: Asset {{ matrixsay_github_asset + '_' + (ansible_system | lower) + '-' + ansible_architecture }} not found.
+      when: assets_url | length == 0
+
+    - name: Download release asset
+      get_url:
+        url: "{{ assets_url[0] }}"
+        dest: "{{ matrixsay_install_path }}"
+        mode: 0755
+

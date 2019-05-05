@@ -1,0 +1,8 @@
+#!/bin/sh
+
+export MATRIX_LOGIN="{{ matrix.username }}:{{ matrix.password }}"
+export MATRIX_ROOM="{{ matrix.room }}"
+export MATRIX_SERVER="{{ matrix.server }}"
+
+matrixsay $@
+
