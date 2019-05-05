@@ -2,7 +2,9 @@
 
 export MATRIX_LOGIN="{{ matrix.username }}:{{ matrix.password }}"
 export MATRIX_ROOM="{{ matrix.room }}"
+{% if matrix.homeserver is defined and matrix.homeserver != "" %}
 export MATRIX_SERVER="{{ matrix.homeserver }}"
+{% endif %}
 
 matrixsay $@
 
