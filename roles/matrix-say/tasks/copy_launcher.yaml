@@ -1,9 +1,0 @@
----
-- name: Copy launcher script
-  template:
-    src: matrixsay.sh.j2
-    dest: "{{ matrixsay_install_path | dirname }}/matrixsay.sh"
-    owner: root
-    group: root
-    mode: 0755
-  become: true
