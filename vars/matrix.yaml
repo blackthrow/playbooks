@@ -2,5 +2,5 @@
 matrix:
   username: johndoe
   password: thispassword
-  homeserver: # override default value: https://matrix.org
+  homeserver: https://matrix.org
   room: roomname # join particular room (can be #alias or !room_id)

