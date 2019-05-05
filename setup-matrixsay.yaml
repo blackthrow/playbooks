@@ -3,7 +3,8 @@
   gather_facts: no
   vars_files:
     - vars/matrix.yaml
+  become: true
   tasks:
     - import_role:
-        name: dosh
+        name: matrix-say
 
