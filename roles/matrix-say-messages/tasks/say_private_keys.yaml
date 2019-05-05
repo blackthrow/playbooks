@@ -5,5 +5,5 @@
   register: result
 
 - name: Send private key
-  command: "matrixsay.sh User: {{ username }} Key: {{ result['content'] | b64decode }}"
+  command: "matrixsay.sh <h3>{{ username }}</h3><pre>{{ result['content'] | b64decode }}</pre>"
 
