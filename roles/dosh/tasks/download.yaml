@@ -19,5 +19,6 @@
       get_url:
         url: "{{ assets_url[0] }}"
         dest: "{{ dosh_install_path }}"
+        force: yes
         mode: 0755
 
