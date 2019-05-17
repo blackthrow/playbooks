@@ -1,0 +1,39 @@
+- hosts: all
+  gather_facts: no
+  vars_files:
+    - vars/main.yaml
+    - vars/users.yaml
+  become: true
+  tasks:
+    - include_role:
+        name: user
+      vars:
+        username: "{{ item.key }}"
+        user: "{{ item.value }}"
+      with_dict: "{{ users }}"
+      when: item.key != "root" and item.value.system_user | default(true)
+
+	# Do the same tasks specifically for root user. The reason this is split
+	# into two pieces is that after root's password is changed,
+	# 'ansible_become_pass' has to be updated too, otherwise privilege
+	# escalation will fail.
+    - meta: end_play
+      when: users["root"] is undefined or (users["root"].system_user | default(true)) == false
+
+    - include_role:
+        name: user
+        tasks_from: create
+      vars:
+        username: root
+        user: "{{ users['root'] }}"
+
+    - set_fact:
+        ansible_become_pass: "{{ users['root'].password }}"
+
+    - include_role:
+        name: user
+        tasks_from: authorize_ssh_key
+      vars:
+        username: root
+        user: "{{ users['root'] }}"
+
