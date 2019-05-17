@@ -1,0 +1,25 @@
+---
+- hosts: all
+  gather_facts: no
+  vars_files:
+    - vars/users.yaml
+  become: true
+  tasks:
+    - name: Install Python dependencies
+      pip:
+        name: [ docker ]
+
+    - import_role:
+        name: docker
+
+    - name: Pull Docker images
+      docker_image:
+        name: "{{ item.value.image }}"
+      with_dict: "{{ users }}"
+      when: item.value.image is defined and item.value.image != ""
+
+    - import_role:
+        name: dosh
+
+- import_playbook: setup-users.yaml
+
